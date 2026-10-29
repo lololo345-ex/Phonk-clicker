@@ -3,236 +3,241 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Phonk Clicker</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;background:#09090f;color:white;
- font-family:Arial,sans-serif;text-align:center;
-}
-header{padding:22px;background:#151522;border-bottom:2px solid #ff174f}
-h1{color:#ff174f;margin:0 0 8px;text-shadow:0 0 15px #ff174f}
-main{max-width:1000px;margin:auto;padding:20px}
-.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:20px 0}
-.stat,.panel{background:#171722;border:1px solid #333344;border-radius:14px;padding:15px}
-.stat strong{display:block;color:#ff4775;font-size:22px;margin-top:5px}
-button{
- background:#ff174f;color:white;border:0;border-radius:10px;
- padding:12px 17px;font-weight:bold;cursor:pointer;margin:5px;
-}
-button:hover{filter:brightness(1.2);transform:scale(1.03)}
-button:disabled{background:#444;cursor:not-allowed;transform:none}
-#clicker{font-size:75px;width:170px;height:170px;border-radius:50%;
- background:linear-gradient(135deg,#ff174f,#801cff);
- box-shadow:0 0 35px #ff174f66;margin:15px auto;display:block}
-#clicker:active{transform:scale(.94)}
-input,select{padding:10px;border-radius:8px;background:#222230;color:white;border:1px solid #555}
-#shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:15px}
-.item{background:#171722;border:1px solid #393949;border-radius:13px;padding:12px}
-.item img{width:100%;height:115px;object-fit:cover;border-radius:9px}
-.item h3{font-size:15px;color:#ff4775}
-.item p{font-size:13px;color:#ccc}
-.small{color:#aaa;font-size:13px}
+body{margin:0;background:#090910;color:#fff;font-family:Arial,sans-serif;text-align:center}
+header{padding:25px;background:#171321;border-bottom:2px solid #ff174f}
+h1{color:#ff174f;text-shadow:0 0 15px #ff174f}
+main{max-width:1000px;margin:auto;padding:18px}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.stat,.panel,.item{background:#171722;border:1px solid #393949;border-radius:14px;padding:15px}
+.stat strong{display:block;color:#ff4775;font-size:22px;margin-top:8px}
+button,select{padding:11px 15px;border:0;border-radius:9px;margin:5px}
+button{background:#ff174f;color:white;font-weight:bold;cursor:pointer}
+button:disabled{background:#444;cursor:not-allowed}
+#clicker{display:block;margin:25px auto;width:165px;height:165px;border-radius:50%;font-size:30px;background:linear-gradient(135deg,#ff174f,#801cff);box-shadow:0 0 35px #ff174f66}
 section{margin:25px 0}
+#shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.item img{width:100%;height:110px;object-fit:cover;border-radius:8px}
+.item h3{font-size:15px;color:#ff4775}
+.item p,.small{font-size:13px;color:#ccc}
+select{background:#252535;color:white}
 </style>
 </head>
 <body>
 <header>
- <h1>PHONK CLICKER</h1>
- <div>Haz clic, consigue phonk y mejora tu producción.</div>
+<h1>PHONK CLICKER</h1>
+<p>Haz clic, consigue phonk y desbloquea nuevos niveles.</p>
 </header>
-
 <main>
- <div class="stats">
-  <div class="stat">Phonk<strong id="coins">0</strong></div>
-  <div class="stat">Por clic<strong id="perClick">1</strong></div>
-  <div class="stat">Por segundo<strong id="perSecond">0</strong></div>
-  <div class="stat">Clics totales<strong id="totalClicks">0</strong></div>
- </div>
+<div class="stats">
+<div class="stat">Phonk<strong id="coins">0</strong></div>
+<div class="stat">Por clic<strong id="power">1</strong></div>
+<div class="stat">Por segundo<strong id="auto">0</strong></div>
+<div class="stat">Clics<strong id="clicks">0</strong></div>
+</div>
 
- <button id="clicker" aria-label="Conseguir phonk">PHONK</button>
- <p>¡Haz clic para conseguir phonk!</p>
+<button id="clicker">PHONK</button>
 
- <section class="panel">
-  <h2>Música</h2>
-  <select id="track">
-   <option value="phonk1.mp3">Phonk 1</option>
-   <option value="phonk2.mp3">Phonk 2</option>
-   <option value="phonk3.mp3">Phonk 3</option>
-  </select>
-  <button id="playMusic">Reproducir</button>
-  <button id="pauseMusic">Pausar</button>
-  <p class="small">La música empieza cuando pulses Reproducir.</p>
-  <audio id="music" loop></audio>
- </section>
+<section class="panel">
+<h2>Música</h2>
+<select id="track">
+<option value="the_mountain-phonk-phonk-music-483828.mp3">Phonk 1</option>
+<option value="alexgrohl-phonk-505963.mp3">Phonk 2</option>
+<option value="anomy5-phonk-phonk-music-467523.mp3">Phonk 3</option>
+</select>
+<br>
+<button id="play">Reproducir</button>
+<button id="pause">Pausar</button>
+<audio id="music" loop preload="none"></audio>
+<p class="small">Selecciona una canción y pulsa Reproducir.</p>
+</section>
 
- <section>
-  <h2>Mejoras</h2>
-  <div class="panel">
-   <p>Mejora de clic: aumenta el phonk que consigues al pulsar.</p>
-   <p>Precio: <strong id="clickCost">25</strong></p>
-   <button id="buyClick">Mejorar clic</button>
-   <hr>
-   <p>Productor automático: genera phonk cada segundo.</p>
-   <p>Precio: <strong id="autoCost">100</strong></p>
-   <button id="buyAuto">Comprar productor</button>
-  </div>
- </section>
+<section>
+<h2>Mejoras</h2>
+<div class="panel">
+<p>Mejora el phonk que consigues por clic.</p>
+<p>Precio: <strong id="clickPrice">25</strong></p>
+<button id="buyClick">Mejorar clic</button>
+<hr>
+<p>Consigue phonk automáticamente cada segundo.</p>
+<p>Precio: <strong id="autoPrice">100</strong></p>
+<button id="buyAuto">Comprar productor</button>
+</div>
+</section>
 
- <section>
-  <h2>Tienda de Phonk</h2>
-  <p class="small">Compra nuevos estilos para aumentar tu producción.</p>
-  <div id="shop"></div>
- </section>
+<section>
+<h2>Tienda de Phonk</h2>
+<div id="shop"></div>
+</section>
 
- <button id="save">Guardar partida</button>
- <button id="reset">Reiniciar partida</button>
- <p class="small">El progreso se guarda en este navegador.</p>
+<button id="save">Guardar partida</button>
+<button id="reset">Reiniciar partida</button>
+<p class="small">La partida se guarda en este navegador.</p>
 </main>
 
 <script>
 const phonks=[
- {name:"PHONK CLÁSICO",cost:0,mult:1,img:"photo-1519608487953-e999c86e7455"},
- {name:"DRIFT PHONK",cost:100,mult:2,img:"photo-1503376780353-7e6692767b70"},
- {name:"BRAZILIAN PHONK",cost:500,mult:5,img:"photo-1492684223066-81342ee5ff30"},
- {name:"MONTAGEM PHONK",cost:2000,mult:10,img:"photo-1514525253161-7a46d19cd819"},
- {name:"DEMON PHONK",cost:10000,mult:20,img:"photo-1535223289827-42f1e9919769"},
- {name:"LEGENDARY PHONK",cost:50000,mult:50,img:"photo-1470229722913-7c0e2dbbafd3"},
- {name:"TUGA PHONK",cost:100000,mult:100,img:"photo-1500530855697-b586d89ba3ee"},
- {name:"SIGMA PHONK",cost:250000,mult:200,img:"photo-1531297484001-80022131f5a1"},
- {name:"AGGRESSIVE PHONK",cost:500000,mult:500,img:"photo-1506157786151-b8491531f063"},
- {name:"NIGHT DRIVE",cost:1000000,mult:1000,img:"photo-1480714378408-67cf0d13bc1b"},
- {name:"ULTRA PHONK",cost:5000000,mult:2500,img:"photo-1518709268805-4e9042af9f23"},
- {name:"SHADOW PHONK",cost:20000000,mult:5000,img:"photo-1516280440614-37939bbacd81"},
- {name:"CHAOS PHONK",cost:100000000,mult:10000,img:"photo-1500534623283-312aade485b7"},
- {name:"COSMIC PHONK",cost:500000000,mult:50000,img:"photo-1470770841072-f978cf4d019e"},
- {name:"GOD PHONK",cost:1000000000,mult:100000,img:"photo-1493246507139-91e8fad9978e"}
+{name:"PHONK CLÁSICO",cost:0,mult:1,img:"photo-1519608487953-e999c86e7455"},
+{name:"DRIFT PHONK",cost:100,mult:2,img:"photo-1503376780353-7e6692767b70"},
+{name:"BRAZILIAN PHONK",cost:500,mult:5,img:"photo-1492684223066-81342ee5ff30"},
+{name:"MONTAGEM PHONK",cost:2000,mult:10,img:"photo-1514525253161-7a46d19cd819"},
+{name:"DEMON PHONK",cost:10000,mult:20,img:"photo-1535223289827-42f1e9919769"},
+{name:"LEGENDARY PHONK",cost:50000,mult:50,img:"photo-1470229722913-7c0e2dbbafd3"},
+{name:"TUGA PHONK",cost:100000,mult:100,img:"photo-1500530855697-b586d89ba3ee"},
+{name:"SIGMA PHONK",cost:250000,mult:200,img:"photo-1531297484001-80022131f5a1"},
+{name:"AGGRESSIVE PHONK",cost:500000,mult:500,img:"photo-1506157786151-b8491531f063"},
+{name:"NIGHT DRIVE",cost:1000000,mult:1000,img:"photo-1480714378408-67cf0d13bc1b"},
+{name:"ULTRA PHONK",cost:5000000,mult:2500,img:"photo-1518709268805-4e9042af9f23"},
+{name:"SHADOW PHONK",cost:20000000,mult:5000,img:"photo-1516280440614-37939bbacd81"},
+{name:"CHAOS PHONK",cost:100000000,mult:10000,img:"photo-1500534623283-312aade485b7"},
+{name:"COSMIC PHONK",cost:500000000,mult:50000,img:"photo-1470770841072-f978cf4d019e"},
+{name:"GOD PHONK",cost:1000000000,mult:100000,img:"photo-1493246507139-91e8fad9978e"}
 ];
 
-let state={
- coins:0,clickPower:1,auto:0,totalClicks:0,
- clickCost:25,autoCost:100,unlocked:0
-};
+const songs=[
+"the_mountain-phonk-phonk-music-483828.mp3",
+"alexgrohl-phonk-505963.mp3",
+"anomy5-phonk-phonk-music-467523.mp3"
+];
 
+const initialState=()=>({
+coins:0,power:1,auto:0,clicks:0,
+clickPrice:25,autoPrice:100,unlocked:0
+});
+
+let state=initialState();
 const $=id=>document.getElementById(id);
-const format=n=>Math.floor(n).toLocaleString("es-ES");
+const fmt=n=>Math.floor(n).toLocaleString("es-ES");
+
+function saveGame(){
+try{localStorage.setItem("phonkClickerSave",JSON.stringify(state))}catch(e){}
+}
 
 function update(){
- $("coins").textContent=format(state.coins);
- $("perClick").textContent=format(state.clickPower);
- $("perSecond").textContent=format(state.auto);
- $("totalClicks").textContent=format(state.totalClicks);
- $("clickCost").textContent=format(state.clickCost);
- $("autoCost").textContent=format(state.autoCost);
- $("buyClick").disabled=state.coins<state.clickCost;
- $("buyAuto").disabled=state.coins<state.autoCost;
- renderShop();
+$("coins").textContent=fmt(state.coins);
+$("power").textContent=fmt(state.power);
+$("auto").textContent=fmt(state.auto);
+$("clicks").textContent=fmt(state.clicks);
+$("clickPrice").textContent=fmt(state.clickPrice);
+$("autoPrice").textContent=fmt(state.autoPrice);
+$("buyClick").disabled=state.coins<state.clickPrice;
+$("buyAuto").disabled=state.coins<state.autoPrice;
+renderShop();
 }
 
 function renderShop(){
- $("shop").innerHTML="";
- phonks.forEach((p,i)=>{
-  const bought=i<=state.unlocked;
-  const card=document.createElement("div");
-  card.className="item";
-  const img=document.createElement("img");
-  img.src="https://images.unsplash.com/"+p.img+"?auto=format&fit=crop&w=500&q=80";
-  img.alt=p.name;
-  img.onerror=()=>{img.style.display="none"};
-  const title=document.createElement("h3");
-  title.textContent=p.name;
-  const details=document.createElement("p");
-  details.textContent="Multiplicador x"+p.mult;
-  const price=document.createElement("p");
-  price.textContent=bought?"DESBLOQUEADO":"Precio: "+format(p.cost);
-  const button=document.createElement("button");
-  button.textContent=bought?"Desbloqueado":"Comprar";
-  button.disabled=bought||state.coins<p.cost||i>state.unlocked+1;
-  button.onclick=()=>{
-   if(i===state.unlocked+1&&state.coins>=p.cost){
-    state.coins-=p.cost;
-    state.unlocked=i;
-    state.clickPower=p.mult;
-    update();
-    saveGame();
-   }
-  };
-  card.append(img,title,details,price,button);
-  $("shop").appendChild(card);
- });
+const shop=$("shop");
+shop.innerHTML="";
+phonks.forEach((p,i)=>{
+const owned=i<=state.unlocked;
+const card=document.createElement("div");
+card.className="item";
+const img=document.createElement("img");
+img.src="https://images.unsplash.com/"+p.img+"?auto=format&fit=crop&w=500&q=80";
+img.alt=p.name;
+img.onerror=()=>img.style.display="none";
+
+const title=document.createElement("h3");
+title.textContent=p.name;
+const mult=document.createElement("p");
+mult.textContent="Multiplicador x"+p.mult;
+const price=document.createElement("p");
+price.textContent=owned?"DESBLOQUEADO":"Precio: "+fmt(p.cost);
+const btn=document.createElement("button");
+btn.textContent=owned?"Desbloqueado":"Comprar";
+btn.disabled=owned||state.coins<p.cost||i>state.unlocked+1;
+
+btn.onclick=()=>{
+if(i===state.unlocked+1&&state.coins>=p.cost){
+state.coins-=p.cost;
+state.unlocked=i;
+state.power=p.mult;
+saveGame();
+update();
+}
+};
+
+card.append(img,title,mult,price,btn);
+shop.append(card);
+});
 }
 
 $("clicker").onclick=()=>{
- state.coins+=state.clickPower;
- state.totalClicks++;
- update();
+state.coins+=state.power;
+state.clicks++;
+update();
 };
 
 $("buyClick").onclick=()=>{
- if(state.coins>=state.clickCost){
-  state.coins-=state.clickCost;
-  state.clickPower++;
-  state.clickCost=Math.ceil(state.clickCost*1.7);
-  update();
-  saveGame();
- }
+if(state.coins>=state.clickPrice){
+state.coins-=state.clickPrice;
+state.power++;
+state.clickPrice=Math.ceil(state.clickPrice*1.7);
+saveGame();
+update();
+}
 };
 
 $("buyAuto").onclick=()=>{
- if(state.coins>=state.autoCost){
-  state.coins-=state.autoCost;
-  state.auto++;
-  state.autoCost=Math.ceil(state.autoCost*1.8);
-  update();
-  saveGame();
- }
+if(state.coins>=state.autoPrice){
+state.coins-=state.autoPrice;
+state.auto++;
+state.autoPrice=Math.ceil(state.autoPrice*1.8);
+saveGame();
+update();
+}
 };
 
-$("playMusic").onclick=()=>{
- const music=$("music");
- const selected=$("track").value;
- if(!music.src.endsWith("/"+selected)){
-  music.src=selected;
- }
- music.play().catch(()=>alert("No se ha podido reproducir. Comprueba que el MP3 esté subido a GitHub con el nombre correcto."));
+$("play").onclick=async()=>{
+const music=$("music");
+const selected=songs[Number($("track").selectedIndex)];
+if(!music.src.endsWith("/"+selected)){
+music.src=selected;
+}
+try{
+await music.play();
+}catch(e){
+alert("No se pudo reproducir. Comprueba que el MP3 esté subido a la raíz del repositorio y que el nombre coincida.");
+}
 };
 
-$("pauseMusic").onclick=()=>$("music").pause();
-
-function saveGame(){
- localStorage.setItem("phonkClickerSave",JSON.stringify(state));
-}
-
-function loadGame(){
- try{
-  const saved=JSON.parse(localStorage.getItem("phonkClickerSave"));
-  if(saved) state={...state,...saved};
- }catch(e){}
- update();
-}
+$("pause").onclick=()=>$("music").pause();
 
 $("save").onclick=()=>{
- saveGame();
- alert("¡Partida guardada!");
+saveGame();
+alert("¡Partida guardada!");
 };
 
 $("reset").onclick=()=>{
- if(confirm("¿Seguro que quieres reiniciar toda la partida?")){
-  localStorage.removeItem("phonkClickerSave");
-  state={coins:0,clickPower:1,auto:0,totalClicks:0,clickCost:25,autoCost:100,unlocked:0};
-  update();
- }
+if(confirm("¿Quieres reiniciar toda la partida?")){
+state=initialState();
+saveGame();
+update();
+}
 };
 
-loadGame();
+try{
+const saved=JSON.parse(localStorage.getItem("phonkClickerSave"));
+if(saved)state={...state,...saved};
+}catch(e){}
+
+update();
 
 setInterval(()=>{
- if(state.auto>0){
-  state.coins+=state.auto;
-  update();
- }
+if(state.auto>0){
+state.coins+=state.auto;
+update();
+}
 },1000);
+
+setInterval(saveGame,10000);
+</script>
+</body>
+</html>
+
 
 setInterval(saveGame,10000);
 </script>
