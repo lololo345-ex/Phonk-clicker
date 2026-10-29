@@ -9,30 +9,118 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 :root{--red:#ff2147;--bg:#10090c;--panel:#171014;--line:#61202e;--muted:#c9b8be}
-*{box-sizing:border-box}body{margin:0;padding:22px 12px;background:radial-gradient(ellipse at top,#351014,var(--bg) 55%,#050507);color:#fff;text-align:center;font-family:Orbitron,system-ui,sans-serif}
-.game{max-width:1050px;margin:auto}h1{font-size:clamp(28px,5vw,48px);text-shadow:0 0 20px #ff173f;margin:8px 0 5px}h1 span{color:var(--red)}.subtitle{font-size:10px;letter-spacing:3px;color:#b5a1a7;margin:0 0 25px}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.stat{padding:13px 5px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.stat small{font-size:9px;color:#d98c9b}.stat h2{font-size:clamp(15px,3vw,25px);overflow-wrap:anywhere;margin:10px 0 2px}
-.click-area{position:relative;margin:28px auto;min-height:245px;display:flex;flex-direction:column;align-items:center;justify-content:center}#clicker{width:190px;height:190px;border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;color:white;background:radial-gradient(circle,#4c101d,#17070b);border:4px solid var(--red);box-shadow:0 0 30px #ff173f77,inset 0 0 25px #ff173f33;cursor:pointer;font-family:inherit;position:relative;z-index:2;transition:transform .08s}#clicker:active{transform:scale(.93)}#clicker strong{letter-spacing:3px;font-size:20px}#clicker small{font-size:9px;color:#ff9bac}.skull{font-size:53px;color:#ff3657;text-shadow:0 0 18px var(--red)}#gain{color:#ff4968;font-size:12px}#message{color:#b5a1a7;font-size:11px;min-height:16px}
-#trail{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}.particle{position:absolute;left:50%;top:80px;width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:burst .7s ease-out forwards}@keyframes burst{from{transform:translate(-50%,-50%) scale(1);opacity:1}to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
-section{margin-top:32px}section>h2{font-size:20px}.hint{font-size:12px;color:#b5a1a7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:16px;text-align:left}.card{padding:12px;border-radius:12px;background:var(--panel);border:1px solid #54202b;min-width:0}.card.active{border-color:var(--red);box-shadow:0 0 12px #ff214733}.cover{height:125px;border-radius:8px;margin-bottom:12px;overflow:hidden;position:relative;background:#21101a;border:1px solid #682333}.cover img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .3s}.card:hover .cover img{transform:scale(1.06)}.cover .cover-title{position:absolute;bottom:0;left:0;right:0;padding:22px 5px 8px;color:white;font-size:10px;text-align:center;letter-spacing:1px;background:linear-gradient(transparent,#080509ef)}.card h3{color:#ff4968;font-size:12px;line-height:1.5;margin:8px 0}.card p{font:12px Arial,sans-serif;color:var(--muted);overflow-wrap:anywhere}.buy,.rebirth-panel button{width:100%;border:0;border-radius:7px;padding:12px 6px;background:var(--red);color:white;font:bold 10px Orbitron,sans-serif;cursor:pointer}.buy:disabled,button:disabled{background:#423037!important;color:#9d8990!important;cursor:not-allowed!important}
-.rebirth-panel{text-align:left;padding:22px;border:1px solid var(--red);border-radius:14px;background:linear-gradient(145deg,#240b13,var(--bg))}.rebirth-panel h2{color:#ff4968;font-size:19px}.rebirth-panel p{font-size:12px;color:#d8c0c7}.rebirth-panel button{width:auto;min-width:150px}.rebirth-panel hr{border:0;border-top:1px solid #54202b;margin:24px 0}.reset{margin-top:30px;padding:10px 15px;border:1px solid #68414b;border-radius:7px;background:transparent;color:#d5b6bf;cursor:pointer}.footer{font-size:9px;letter-spacing:2px;color:#69535b;margin:30px 0}.sound-row{margin-top:12px}.sound-row button{background:#28151d;border:1px solid #743047;color:#fff;border-radius:7px;padding:10px 13px;cursor:pointer;font-family:inherit;font-size:10px}
+*{box-sizing:border-box}
+body{margin:0;padding:22px 12px;background:radial-gradient(ellipse at top,#351014,var(--bg) 55%,#050507);color:#fff;text-align:center;font-family:Orbitron,system-ui,sans-serif}
+.game{max-width:1050px;margin:auto}
+h1{font-size:clamp(28px,5vw,48px);text-shadow:0 0 20px #ff173f;margin:8px 0 5px}
+h1 span{color:var(--red)}
+.subtitle{font-size:10px;letter-spacing:3px;color:#b5a1a7;margin:0 0 25px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{padding:13px 5px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.stat small{font-size:9px;color:#d98c9b}
+.stat h2{font-size:clamp(15px,3vw,25px);overflow-wrap:anywhere;margin:10px 0 2px}
+.click-area{position:relative;margin:28px auto;min-height:245px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#clicker{width:190px;height:190px;border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;color:white;background:radial-gradient(circle,#4c101d,#17070b);border:4px solid var(--red);box-shadow:0 0 30px #ff173f77,inset 0 0 25px #ff173f33;cursor:pointer;font-family:inherit;position:relative;z-index:2;transition:transform .08s;overflow:hidden}
+#clicker:active{transform:scale(.93)}
+#clicker strong{letter-spacing:2px;font-size:14px;position:relative;z-index:1;text-shadow:0 2px 8px #000}
+#clicker small{font-size:9px;color:#ff9bac;position:relative;z-index:1;text-shadow:0 2px 8px #000}
+.click-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7;border-radius:50%;background:#210b12}
+#clicker::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 25%,#080509df);pointer-events:none;border-radius:50%}
+#gain{color:#ff4968;font-size:12px}
+#message{color:#b5a1a7;font-size:11px;min-height:16px}
+#trail{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
+.particle{position:absolute;left:50%;top:80px;width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:burst .7s ease-out forwards}
+@keyframes burst{from{transform:translate(-50%,-50%) scale(1);opacity:1}to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
+section{margin-top:32px}
+section>h2{font-size:20px}
+.hint{font-size:12px;color:#b5a1a7}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:16px;text-align:left}
+.card{padding:12px;border-radius:12px;background:var(--panel);border:1px solid #54202b;min-width:0}
+.card.active{border-color:var(--red);box-shadow:0 0 12px #ff214733}
+.cover{height:125px;border-radius:8px;margin-bottom:12px;overflow:hidden;position:relative;background:#21101a;border:1px solid #682333}
+.cover img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .3s}
+.card:hover .cover img{transform:scale(1.06)}
+.cover .cover-title{position:absolute;bottom:0;left:0;right:0;padding:22px 5px 8px;color:white;font-size:10px;text-align:center;letter-spacing:1px;background:linear-gradient(transparent,#080509ef)}
+.card h3{color:#ff4968;font-size:12px;line-height:1.5;margin:8px 0}
+.card p{font:12px Arial,sans-serif;color:var(--muted);overflow-wrap:anywhere}
+.buy,.rebirth-panel button{width:100%;border:0;border-radius:7px;padding:12px 6px;background:var(--red);color:white;font:bold 10px Orbitron,sans-serif;cursor:pointer}
+.buy:disabled,button:disabled{background:#423037!important;color:#9d8990!important;cursor:not-allowed!important}
+.rebirth-panel{text-align:left;padding:22px;border:1px solid var(--red);border-radius:14px;background:linear-gradient(145deg,#240b13,var(--bg))}
+.rebirth-panel h2{color:#ff4968;font-size:19px}
+.rebirth-panel p{font-size:12px;color:#d8c0c7}
+.rebirth-panel button{width:auto;min-width:150px}
+.rebirth-panel hr{border:0;border-top:1px solid #54202b;margin:24px 0}
+.reset{margin-top:30px;padding:10px 15px;border:1px solid #68414b;border-radius:7px;background:transparent;color:#d5b6bf;cursor:pointer}
+.footer{font-size:9px;letter-spacing:2px;color:#69535b;margin:30px 0}
+.sound-row{margin-top:12px}
+.sound-row button{background:#28151d;border:1px solid #743047;color:#fff;border-radius:7px;padding:10px 13px;cursor:pointer;font-family:inherit;font-size:10px}
+.music-player{margin:12px auto;padding:12px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;max-width:350px;border:1px solid #743047;border-radius:10px;background:#171014;color:#ff4968;font-size:10px}
+.music-player button{background:#ff2147;border:0;border-radius:7px;padding:10px 12px;color:white;font-family:inherit;font-size:10px;cursor:pointer}
+.music-player input{width:100px;accent-color:#ff2147}
 @media(max-width:450px){.stats{gap:5px}.stat small{font-size:7px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rebirth-panel{padding:15px}.cover{height:100px}}
 </style>
 </head>
 <body>
 <div class="game">
-<header><h1>PHONK <span>CLICKER</span></h1><p class="subtitle">BRAZILIAN PHONK · RISE TO THE TOP</p></header>
+<header>
+<h1>PHONK <span>CLICKER</span></h1>
+<p class="subtitle">BRAZILIAN PHONK · RISE TO THE TOP</p>
+</header>
+
 <div class="stats">
- <div class="stat"><small>PHONK COINS</small><h2 id="coins">0</h2></div>
- <div class="stat"><small>POR CLIC</small><h2 id="power">1</h2></div>
- <div class="stat"><small>POR SEGUNDO</small><h2 id="auto">0</h2></div>
+<div class="stat"><small>PHONK COINS</small><h2 id="coins">0</h2></div>
+<div class="stat"><small>POR CLIC</small><h2 id="power">1</h2></div>
+<div class="stat"><small>POR SEGUNDO</small><h2 id="auto">0</h2></div>
 </div>
-<div class="click-area"><div id="trail"></div><button id="clicker" aria-label="Conseguir monedas"><span class="skull">☠</span><strong>PHONK</strong><small>¡HAZ CLIC!</small></button><p id="gain">+1 PHONK COINS</p><p id="message">¡Empieza tu imperio!</p><div class="sound-row"><button id="soundBtn">ACTIVAR SONIDO</button></div></div>
-<section><h2>TIENDA DE MEJORAS</h2><div id="shop" class="grid"></div></section>
-<section><h2>PHONKS</h2><p class="hint">Desbloquea y equipa Phonks. Cada uno produce monedas por segundo.</p><div id="phonks" class="grid"></div></section>
-<section class="rebirth-panel"><h2>RENACIMIENTOS</h2><p>Renacimientos: <strong id="rebirthCount">0 / 100</strong></p><p>Multiplicador: <strong id="rebirthMult">x1</strong></p><p id="rebirthCost">Coste: 1.000 monedas</p><button id="rebirthBtn">RENACER</button><hr><h2>SUPER RENACIMIENTOS</h2><p>Superrenacimientos: <strong id="superCount">0 / 20</strong></p><p>Multiplicador: <strong id="superMult">x1</strong></p><p id="superInfo">Phonks desbloqueados: 1 / 15</p><button id="superBtn">SUPER RENACER</button></section>
-<button id="reset" class="reset">BORRAR TODA LA PARTIDA</button><p class="footer">PHONK CLICKER · KEEP GRINDING</p>
+
+<div class="click-area">
+<div id="trail"></div>
+<button id="clicker" aria-label="Conseguir monedas">
+<img id="clickPhonkImage" class="click-art" src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=300&q=80" alt="Imagen ilustrativa del Phonk equipado">
+<strong id="clickPhonkName">PHONK</strong>
+<small>¡HAZ CLIC!</small>
+</button>
+<p id="gain">+1 PHONK COINS</p>
+<p id="message">¡Empieza tu imperio!</p>
+<div class="sound-row"><button id="soundBtn">ACTIVAR SONIDO</button></div>
+
+<div class="music-player">
+<button id="musicBtn">▶ PLAY PHONK</button>
+<label for="musicVolume">VOLUMEN</label>
+<input id="musicVolume" type="range" min="0" max="100" value="35">
+<audio id="backgroundMusic" src="phonk.mp3" loop preload="none"></audio>
 </div>
+</div>
+
+<section>
+<h2>TIENDA DE MEJORAS</h2>
+<div id="shop" class="grid"></div>
+</section>
+
+<section>
+<h2>PHONKS</h2>
+<p class="hint">Desbloquea y equipa Phonks. Cada uno produce monedas por segundo.</p>
+<div id="phonks" class="grid"></div>
+</section>
+
+<section class="rebirth-panel">
+<h2>RENACIMIENTOS</h2>
+<p>Renacimientos: <strong id="rebirthCount">0 / 100</strong></p>
+<p>Multiplicador: <strong id="rebirthMult">x1</strong></p>
+<p id="rebirthCost">Coste: 1.000 monedas</p>
+<button id="rebirthBtn">RENACER</button>
+<hr>
+<h2>SUPER RENACIMIENTOS</h2>
+<p>Superrenacimientos: <strong id="superCount">0 / 20</strong></p>
+<p>Multiplicador: <strong id="superMult">x1</strong></p>
+<p id="superInfo">Phonks desbloqueados: 1 / 15</p>
+<button id="superBtn">SUPER RENACER</button>
+</section>
+
+<button id="reset" class="reset">BORRAR TODA LA PARTIDA</button>
+<p class="footer">PHONK CLICKER · KEEP GRINDING</p>
+</div>
+
 <script>
 const items=[
 {id:"finger",name:"DEDOS DE ACERO",desc:"+1 por clic",cost:25,type:"power",amount:1},
@@ -41,6 +129,7 @@ const items=[
 {id:"dj",name:"DJ BRASILEÑO",desc:"+5 por segundo",cost:350,type:"auto",amount:5},
 {id:"energy",name:"ENERGÍA PHONK",desc:"Duplica la fuerza por clic",cost:500,type:"mult"}
 ];
+
 const phonks=[
 {id:"classic",name:"PHONK CLÁSICO",cost:0,mult:1,img:"photo-1519608487953-e999c86e7455"},
 {id:"drift",name:"DRIFT PHONK",cost:100,mult:2,img:"photo-1503376780353-7e6692767b70"},
@@ -58,13 +147,25 @@ const phonks=[
 {id:"cosmic",name:"COSMIC PHONK",cost:500000000,mult:50000,img:"photo-1500530855697-b586d89ba3ee"},
 {id:"god",name:"GOD PHONK",cost:1000000000,mult:100000,img:"photo-1519608487953-e999c86e7455"}
 ];
+
 const $=id=>document.getElementById(id);
-function fresh(){return {coins:0,power:1,auto:0,multiplier:1,levels:{},ownedPhonks:["classic"],selectedPhonk:"classic",rebirths:0,superRebirths:0};}
+
+function fresh(){
+return {coins:0,power:1,auto:0,multiplier:1,levels:{},ownedPhonks:["classic"],selectedPhonk:"classic",rebirths:0,superRebirths:0};
+}
+
 let state;
-try{state={...fresh(),...JSON.parse(localStorage.getItem("phonkSave")||"{}")};}catch{state=fresh();}
-state.levels||={};state.ownedPhonks||=["classic"];
+try{
+state={...fresh(),...JSON.parse(localStorage.getItem("phonkSave")||"{}")};
+}catch{
+state=fresh();
+}
+
+state.levels||={};
+state.ownedPhonks||=["classic"];
 state.rebirths=Math.max(0,Math.min(100,Number(state.rebirths)||0));
 state.superRebirths=Math.max(0,Math.min(20,Number(state.superRebirths)||0));
+
 const fmt=n=>Math.floor(n).toLocaleString("es-ES");
 const short=n=>n>=1e12?(n/1e12).toFixed(2)+"T":n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(2)+"M":n>=1e3?(n/1e3).toFixed(2)+"K":fmt(n);
 const selected=()=>phonks.find(p=>p.id===state.selectedPhonk)||phonks[0];
@@ -73,37 +174,226 @@ const clickPower=()=>state.power*state.multiplier*selected().mult*totalMult();
 const phonkIncome=()=>selected().mult*.05*totalMult();
 const itemCost=item=>Math.floor(item.cost*1.65**(state.levels[item.id]||0));
 const rebirthCost=()=>1000*(state.rebirths+1)**2;
-function save(){try{localStorage.setItem("phonkSave",JSON.stringify(state));}catch{}}
+
+function save(){
+try{localStorage.setItem("phonkSave",JSON.stringify(state));}catch{}
+}
+
 let audioCtx=null,soundOn=false;
+
 function beep(freq=180,duration=.09,type="triangle"){
- if(!soundOn)return;
- try{audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(35,freq*.55),audioCtx.currentTime+duration);g.gain.setValueAtTime(.07,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration);}catch{}
+if(!soundOn)return;
+try{
+audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
+if(audioCtx.state==="suspended")audioCtx.resume();
+const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+o.type=type;
+o.frequency.setValueAtTime(freq,audioCtx.currentTime);
+o.frequency.exponentialRampToValueAtTime(Math.max(35,freq*.55),audioCtx.currentTime+duration);
+g.gain.setValueAtTime(.07,audioCtx.currentTime);
+g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+o.connect(g);g.connect(audioCtx.destination);
+o.start();o.stop(audioCtx.currentTime+duration);
+}catch{}
 }
-function burst(){const trail=$("trail");for(let i=0;i<12;i++){const p=document.createElement("span");p.className="particle";const a=Math.random()*Math.PI*2,d=50+Math.random()*120;p.style.setProperty("--x",Math.cos(a)*d+"px");p.style.setProperty("--y",Math.sin(a)*d+"px");trail.appendChild(p);setTimeout(()=>p.remove(),750);}}
-function resetRun(){state.coins=0;state.power=1;state.auto=0;state.multiplier=1;state.levels={};state.ownedPhonks=["classic"];state.selectedPhonk="classic";}
-function buyItem(item){const c=itemCost(item);if(state.coins<c)return;state.coins-=c;state.levels[item.id]=(state.levels[item.id]||0)+1;if(item.type==="power")state.power+=item.amount;if(item.type==="auto")state.auto+=item.amount;if(item.type==="mult")state.multiplier*=2;beep(320);render();}
-function buyPhonk(p){if(state.ownedPhonks.includes(p.id)){state.selectedPhonk=p.id;}else{if(state.coins<p.cost)return;state.coins-=p.cost;state.ownedPhonks.push(p.id);state.selectedPhonk=p.id;}beep(420,.15);render();}
-function rebirth(){if(state.rebirths>=100||state.coins<rebirthCost())return;if(!confirm("¿Renacer? Perderás monedas, mejoras y Phonks desbloqueados."))return;resetRun();state.rebirths++;$("message").textContent="¡RENACIMIENTO CONSEGUIDO!";beep(260,.3,"sawtooth");render();}
-function superRebirth(){if(state.superRebirths>=20)return;if(state.ownedPhonks.length<15){$("message").textContent="¡Necesitas desbloquear los 15 Phonks!";return;}if(!confirm("¿SUPER RENACER? Perderás monedas, mejoras, Phonks y renacimientos normales. Multiplicador permanente x5."))return;resetRun();state.rebirths=0;state.superRebirths++;$("message").textContent="¡SUPER RENACIMIENTO x5!";beep(100,.5,"sawtooth");render();}
+
+function burst(){
+const trail=$("trail");
+for(let i=0;i<12;i++){
+const p=document.createElement("span");
+p.className="particle";
+const a=Math.random()*Math.PI*2,d=50+Math.random()*120;
+p.style.setProperty("--x",Math.cos(a)*d+"px");
+p.style.setProperty("--y",Math.sin(a)*d+"px");
+trail.appendChild(p);
+setTimeout(()=>p.remove(),750);
+}
+}
+
+function resetRun(){
+state.coins=0;
+state.power=1;
+state.auto=0;
+state.multiplier=1;
+state.levels={};
+state.ownedPhonks=["classic"];
+state.selectedPhonk="classic";
+}
+
+function buyItem(item){
+const c=itemCost(item);
+if(state.coins<c)return;
+state.coins-=c;
+state.levels[item.id]=(state.levels[item.id]||0)+1;
+if(item.type==="power")state.power+=item.amount;
+if(item.type==="auto")state.auto+=item.amount;
+if(item.type==="mult")state.multiplier*=2;
+beep(320);
+render();
+}
+
+function buyPhonk(p){
+if(state.ownedPhonks.includes(p.id)){
+state.selectedPhonk=p.id;
+}else{
+if(state.coins<p.cost)return;
+state.coins-=p.cost;
+state.ownedPhonks.push(p.id);
+state.selectedPhonk=p.id;
+}
+beep(420,.15);
+render();
+}
+
+function rebirth(){
+if(state.rebirths>=100||state.coins<rebirthCost())return;
+if(!confirm("¿Renacer? Perderás monedas, mejoras y Phonks desbloqueados."))return;
+resetRun();
+state.rebirths++;
+$("message").textContent="¡RENACIMIENTO CONSEGUIDO!";
+beep(260,.3,"sawtooth");
+render();
+}
+
+function superRebirth(){
+if(state.superRebirths>=20)return;
+if(state.ownedPhonks.length<15){
+$("message").textContent="¡Necesitas desbloquear los 15 Phonks!";
+return;
+}
+if(!confirm("¿SUPER RENACER? Perderás monedas, mejoras, Phonks y renacimientos normales. Multiplicador permanente x5."))return;
+resetRun();
+state.rebirths=0;
+state.superRebirths++;
+$("message").textContent="¡SUPER RENACIMIENTO x5!";
+beep(100,.5,"sawtooth");
+render();
+}
+
 function render(){
- $("coins").textContent=short(state.coins);$("power").textContent=short(clickPower());$("auto").textContent=short(state.auto+phonkIncome());
- $("rebirthCount").textContent=`${state.rebirths} / 100`;$("rebirthMult").textContent="x"+short(1+state.rebirths);
- $("rebirthCost").textContent=state.rebirths>=100?"Máximo alcanzado":"Coste: "+fmt(rebirthCost())+" monedas";
- $("rebirthBtn").disabled=state.rebirths>=100||state.coins<rebirthCost();
- $("superCount").textContent=`${state.superRebirths} / 20`;$("superMult").textContent="x"+short(5**state.superRebirths);
- $("superInfo").textContent=state.superRebirths>=20?"¡Máximo alcanzado!":`Phonks desbloqueados: ${state.ownedPhonks.length} / 15`;
- $("superBtn").disabled=state.superRebirths>=20||state.ownedPhonks.length<15;
- $("shop").innerHTML=items.map(i=>{const c=itemCost(i);return `<div class="card"><h3>${i.name}</h3><p>${i.desc}</p><p>Nivel: ${state.levels[i.id]||0}</p><button class="buy" data-buy="${i.id}" ${state.coins<c?"disabled":""}>COMPRAR · ${short(c)}</button></div>`}).join("");
- $("phonks").innerHTML=phonks.map(p=>{const owned=state.ownedPhonks.includes(p.id),active=state.selectedPhonk===p.id;return `<div class="card ${active?"active":""}"><div class="cover"><img loading="lazy" src="https://images.unsplash.com/${p.img}?auto=format&fit=crop&w=600&q=80" alt="Portada ilustrativa de ${p.name}" onerror="this.style.display='none'"><div class="cover-title">${p.name}</div></div><h3>${p.name}</h3><p>Multiplicador por clic: x${short(p.mult)}</p><p>Genera: ${short(p.mult*.05*totalMult())} monedas/segundo</p><p>${owned?"Desbloqueado":"Coste: "+short(p.cost)}</p><button class="buy" data-phonk="${p.id}" ${(!owned&&state.coins<p.cost)||active?"disabled":""}>${active?"EQUIPADO":owned?"EQUIPAR":"DESBLOQUEAR"}</button></div>`}).join("");
- $("gain").textContent="+"+short(clickPower())+" PHONK COINS";save();
+const activePhonk=selected();
+
+$("clickPhonkImage").src=
+`https://images.unsplash.com/${activePhonk.img}?auto=format&fit=crop&w=300&q=80`;
+$("clickPhonkImage").alt="Imagen ilustrativa de "+activePhonk.name;
+$("clickPhonkName").textContent=activePhonk.name;
+
+$("coins").textContent=short(state.coins);
+$("power").textContent=short(clickPower());
+$("auto").textContent=short(state.auto+phonkIncome());
+
+$("rebirthCount").textContent=`${state.rebirths} / 100`;
+$("rebirthMult").textContent="x"+short(1+state.rebirths);
+$("rebirthCost").textContent=state.rebirths>=100?"Máximo alcanzado":"Coste: "+fmt(rebirthCost())+" monedas";
+$("rebirthBtn").disabled=state.rebirths>=100||state.coins<rebirthCost();
+
+$("superCount").textContent=`${state.superRebirths} / 20`;
+$("superMult").textContent="x"+short(5**state.superRebirths);
+$("superInfo").textContent=state.superRebirths>=20?"¡Máximo alcanzado!":`Phonks desbloqueados: ${state.ownedPhonks.length} / 15`;
+$("superBtn").disabled=state.superRebirths>=20||state.ownedPhonks.length<15;
+
+$("shop").innerHTML=items.map(i=>{
+const c=itemCost(i);
+return `<div class="card"><h3>${i.name}</h3><p>${i.desc}</p><p>Nivel: ${state.levels[i.id]||0}</p><button class="buy" data-buy="${i.id}" ${state.coins<c?"disabled":""}>COMPRAR · ${short(c)}</button></div>`;
+}).join("");
+
+$("phonks").innerHTML=phonks.map(p=>{
+const owned=state.ownedPhonks.includes(p.id);
+const active=state.selectedPhonk===p.id;
+return `<div class="card ${active?"active":""}">
+<div class="cover"><img loading="lazy" src="https://images.unsplash.com/${p.img}?auto=format&fit=crop&w=600&q=80" alt="Imagen ilustrativa de ${p.name}" onerror="this.style.display='none'"><div class="cover-title">${p.name}</div></div>
+<h3>${p.name}</h3>
+<p>Multiplicador por clic: x${short(p.mult)}</p>
+<p>Genera: ${short(p.mult*.05*totalMult())} monedas/segundo</p>
+<p>${owned?"Desbloqueado":"Coste: "+short(p.cost)}</p>
+<button class="buy" data-phonk="${p.id}" ${(!owned&&state.coins<p.cost)||active?"disabled":""}>${active?"EQUIPADO":owned?"EQUIPAR":"DESBLOQUEAR"}</button>
+</div>`;
+}).join("");
+
+$("gain").textContent="+"+short(clickPower())+" PHONK COINS";
+save();
 }
-$("clicker").addEventListener("click",()=>{const earned=clickPower();state.coins+=earned;$("message").textContent="¡Sigue haciendo clic!";burst();beep(180+Math.random()*100);render();});
-$("shop").addEventListener("click",e=>{const b=e.target.closest("[data-buy]");if(b){const i=items.find(i=>i.id===b.dataset.buy);if(i)buyItem(i);}});
-$("phonks").addEventListener("click",e=>{const b=e.target.closest("[data-phonk]");if(b){const p=phonks.find(p=>p.id===b.dataset.phonk);if(p)buyPhonk(p);}});
-$("rebirthBtn").addEventListener("click",rebirth);$("superBtn").addEventListener("click",superRebirth);
-$("soundBtn").addEventListener("click",()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"SONIDO ACTIVADO":"ACTIVAR SONIDO";if(soundOn)beep(440,.15);});
-$("reset").addEventListener("click",()=>{if(confirm("¿Borrar toda la partida?")){state=fresh();$("message").textContent="Partida nueva.";render();}});
-setInterval(()=>{const income=state.auto+phonkIncome();if(income>0){state.coins+=income;render();}},1000);
+
+$("clicker").addEventListener("click",()=>{
+const earned=clickPower();
+state.coins+=earned;
+$("message").textContent="¡Sigue haciendo clic!";
+burst();
+beep(180+Math.random()*100);
+render();
+});
+
+$("shop").addEventListener("click",e=>{
+const b=e.target.closest("[data-buy]");
+if(b){
+const i=items.find(i=>i.id===b.dataset.buy);
+if(i)buyItem(i);
+}
+});
+
+$("phonks").addEventListener("click",e=>{
+const b=e.target.closest("[data-phonk]");
+if(b){
+const p=phonks.find(p=>p.id===b.dataset.phonk);
+if(p)buyPhonk(p);
+}
+});
+
+$("rebirthBtn").addEventListener("click",rebirth);
+$("superBtn").addEventListener("click",superRebirth);
+
+$("soundBtn").addEventListener("click",()=>{
+soundOn=!soundOn;
+$("soundBtn").textContent=soundOn?"SONIDO ACTIVADO":"ACTIVAR SONIDO";
+if(soundOn)beep(440,.15);
+});
+
+$("reset").addEventListener("click",()=>{
+if(confirm("¿Borrar toda la partida?")){
+state=fresh();
+$("message").textContent="Partida nueva.";
+render();
+}
+});
+
+const music=$("backgroundMusic");
+const musicBtn=$("musicBtn");
+const musicVolume=$("musicVolume");
+music.volume=Number(musicVolume.value)/100;
+
+musicVolume.addEventListener("input",()=>{
+music.volume=Number(musicVolume.value)/100;
+});
+
+musicBtn.addEventListener("click",async()=>{
+if(music.paused){
+try{
+await music.play();
+musicBtn.textContent="Ⅱ PAUSAR PHONK";
+}catch(error){
+alert("No se encuentra phonk.mp3. Súbelo a GitHub en la misma carpeta que index.html.");
+}
+}else{
+music.pause();
+musicBtn.textContent="▶ PLAY PHONK";
+}
+});
+
+music.addEventListener("pause",()=>{
+musicBtn.textContent="▶ PLAY PHONK";
+});
+music.addEventListener("play",()=>{
+musicBtn.textContent="Ⅱ PAUSAR PHONK";
+});
+
+setInterval(()=>{
+const income=state.auto+phonkIncome();
+if(income>0){
+state.coins+=income;
+render();
+}
+},1000);
+
 render();
 </script>
 </body>
